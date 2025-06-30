@@ -3,6 +3,7 @@ import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/
 import { CharactersService } from './characters.service';
 import { CharactersResponseDto } from '../application/domain/characters.response';
 import { CharacterDto } from '../application/domain/character.dto';
+import { map, Observable } from 'rxjs';
 
 @ApiTags('characters')
 @Controller('characters')
@@ -22,7 +23,7 @@ export class CharactersController {
     description: 'Filter characters by episode',
     example: 'NEWHOPE',
   })
-  findAll(@Query('episode') episode?: string): CharactersResponseDto {
+  findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto> {
     if (episode) {
       return this.charactersService.findByEpisode(episode);
     }
@@ -45,11 +46,12 @@ export class CharactersController {
     status: 404,
     description: 'Character not found',
   })
-  findOne(@Param('name') name: string): CharacterDto {
-    const character = this.charactersService.findByName(name);
-    if (!character) {
-      throw new Error('Character not found');
-    }
-    return character;
+  findOne(@Param('name') name: string): Observable<CharacterDto> {
+    return this.charactersService.findByName(name).pipe(map((character)=>{
+      if (!character) {
+        throw new Error('Character not found');
+      }
+      return character;
+    }));
   }
 }

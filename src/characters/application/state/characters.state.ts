@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CharacterDto } from '../application/domain/character.dto';
-import { CharactersResponseDto } from '../application/domain/characters.response';
-import * as charactersData from '../infrastructure/utils/characters.json';
+import { CharacterDto } from '../../application/domain/character.dto';
+import { CharactersResponseDto } from '../../application/domain/characters.response';
+import * as charactersData from '../../infrastructure/utils/characters.json';
 import { map, Observable, of } from 'rxjs';
 
 @Injectable()
-export class CharactersService {
+export class CharactersState {
   private readonly characters$: Observable<CharacterDto[]> = of(charactersData.characters);
 
   findAll(): Observable<CharactersResponseDto> {

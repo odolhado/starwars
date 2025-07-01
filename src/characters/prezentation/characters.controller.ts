@@ -1,14 +1,14 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CharactersService } from './characters.service';
 import { CharactersResponseDto } from '../application/domain/characters.response';
 import { CharacterDto } from '../application/domain/character.dto';
 import { map, Observable } from 'rxjs';
+import { CharactersState } from '../application/state/characters.state';
 
 @ApiTags('characters')
 @Controller('characters')
 export class CharactersController {
-  constructor(private readonly charactersService: CharactersService) {}
+  constructor(private readonly charactersState: CharactersState) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all Star Wars characters' })
@@ -25,9 +25,9 @@ export class CharactersController {
   })
   findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto> {
     if (episode) {
-      return this.charactersService.findByEpisode(episode);
+      return this.charactersState.findByEpisode(episode);
     }
-    return this.charactersService.findAll();
+    return this.charactersState.findAll();
   }
 
   @Get(':name')
@@ -47,7 +47,7 @@ export class CharactersController {
     description: 'Character not found',
   })
   findOne(@Param('name') name: string): Observable<CharacterDto> {
-    return this.charactersService.findByName(name).pipe(map((character)=>{
+    return this.charactersState.findByName(name).pipe(map((character)=>{
       if (!character) {
         throw new Error('Character not found');
       }

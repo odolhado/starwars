@@ -75,7 +75,7 @@ export class CharactersController {
   @ApiResponse({ status: 201, description: 'Character created successfully', type: CharacterDto })
   @ApiResponse({ status: 400, description: 'Bad request' })
   createCharacter(@Body() characterDto: CharacterDto): Observable<void> {
-    return this.updateCharactersCommand.updateCharacter({ ...characterDto, id: uuidv4() });
+    return this.updateCharactersCommand.createCharacter({ ...characterDto, id: uuidv4() });
   }
 
   @Put(':id')

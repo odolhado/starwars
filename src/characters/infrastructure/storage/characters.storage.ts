@@ -46,4 +46,13 @@ export class CharactersStorage implements CharactersStorageInterface {
 
     return of(void 0);
   }
+
+  createOne(
+    changedCharacter: CharacterDto,
+  ): Observable<void> {
+    this.charactersInMemory.next([...this.charactersInMemory.getValue(), changedCharacter]);
+    console.log('> createOne', this.charactersInMemory.getValue());
+
+    return of(void 0);
+  }
 }

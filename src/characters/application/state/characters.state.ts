@@ -27,6 +27,10 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
     return this.charactersStorage.createOne(character);
   }
 
+  deleteCharacter(characterid: string): Observable<void> {
+    return this.charactersStorage.deleteOne(characterid);
+  }
+
   initializeCharacters(): Observable<void> {
     return this.charactersRepository.getCharacters().pipe(
       switchMap(characters => {

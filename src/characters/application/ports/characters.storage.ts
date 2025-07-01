@@ -6,6 +6,7 @@ export interface CharactersStorageInterface {
   selectAll(): Observable<CharacterDto[]>
   updateOne(chatacter: CharacterDto): Observable<void>
   createOne(chatacter: CharacterDto): Observable<void>
+  deleteOne(chatacterId: string): Observable<void>
 }
 
 export const CHARACTERS_STORAGE: symbol = Symbol('CHARACTERS_STORAGE');

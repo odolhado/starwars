@@ -1,0 +1,50 @@
+---
+description: Spec File Creation Rules
+globs: *.spec.ts
+alwaysApply: true
+---
+
+## Component Configuration Rules
+
+### Standalone Components
+- Standalone components go in `imports` array, NOT `declarations`
+- Check component decorator for `standalone: true`
+- Example:
+  ```typescript
+  await TestBed.configureTestingModule({
+    imports: [
+      ComponentToTest,
+      TestPageComponent,  // if standalone
+      // ... other imports
+    ],
+    providers: [/* ... */]
+  });
+
+
+### Observable Data Mocking
+inject query ports:
+```typescript
+{
+  provide: GETS_DATA_QUERY_RESULT_PORT,
+  useValue: {
+    getDataQueryResult: () => of(mockData)
+  }
+}
+```
+
+### Observable Testing
+**ALWAYS use `lastValueFrom()` instead of `.subscribe()` for testing single-value observables:**
+```typescript
+// ❌ DON'T use .subscribe()
+observable.pipe(take(1)).subscribe((result) => {
+  expect(result).toBeDefined();
+});
+
+// ✅ DO use lastValueFrom()
+const result = await lastValueFrom(observable);
+expect(result).toBeDefined();
+```
+- Import `lastValueFrom` from `rxjs`
+- Make test functions `async` when using `lastValueFrom`
+- This provides cleaner error handling and avoids callback hell
+- Follows modern RxJS testing best practices

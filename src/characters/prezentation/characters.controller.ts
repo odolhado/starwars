@@ -12,7 +12,7 @@ import {
   FIND_ONE_CHARACTER_QUERY_RESULT,
   FindOneCharacterQueryResult
 } from '../application/query-result/find-one-by-episode-query.result';
-import { Put } from '@nestjs/common/decorators/http/request-mapping.decorator';
+import { Delete, Put } from '@nestjs/common/decorators/http/request-mapping.decorator';
 import { v4 as uuidv4 } from 'uuid';
 
 @ApiTags('characters')
@@ -106,5 +106,22 @@ export class CharactersController {
     const characterWithId = { ...characterDto, id };
 
     return this.updateCharactersCommand.updateCharacter(characterWithId);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete an existing character' })
+  @ApiParam({
+    name: 'id',
+    description: 'The ID of the character to delete',
+    example: '1',
+  })
+  @ApiResponse({ status: 200, description: 'Character deleted successfully', type: CharacterDto })
+  @ApiResponse({ status: 404, description: 'Character not found' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  deleteCharacter(
+    @Param('id') id: string,
+  ): Observable<void> {
+
+    return this.updateCharactersCommand.deleteCharacter(id);
   }
 }

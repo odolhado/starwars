@@ -55,4 +55,26 @@ export class CharactersStorage implements CharactersStorageInterface {
 
     return of(void 0);
   }
+
+  deleteOne(
+    characterId: string,
+  ): Observable<void> {
+    const characters = this.charactersInMemory.getValue()
+    let found = false;
+
+    const updatedCharacters = characters?.map((character: CharacterDto)=> {
+      if (character.id === characterId) {
+        found = true;
+        return;
+      }
+      return character;
+    })
+
+    if (found) {
+      this.charactersInMemory.next(updatedCharacters);
+      console.log('> updatedCharacters', updatedCharacters);
+    }
+
+    return of(void 0);
+  }
 }

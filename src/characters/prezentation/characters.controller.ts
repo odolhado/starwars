@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Inject, Param, Post, Query } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CharactersResponseDto } from '../application/domain/characters.response';
-import { CharacterDto } from '../application/domain/character.dto';
+import { CharacterDto, CharacterNewDto } from '../application/domain/character.dto';
 import { map, Observable } from 'rxjs';
 import { UPDATE_CHARACTER_COMMAND, UpdateCharactersInterface } from '../application/commands/update-character.command';
 import {
@@ -21,8 +21,7 @@ export class CharactersController {
   constructor(
     @Inject(UPDATE_CHARACTER_COMMAND) private readonly updateCharactersCommand: UpdateCharactersInterface,
     @Inject(FIND_ONE_CHARACTER_QUERY_RESULT) private readonly findOneCharacterQueryResult: FindOneCharacterQueryResult,
-    @Inject(FIND_ALL_CHARACTERS_QUERY_RESULT) private readonly findAllCharactersQueryResult: FindAllCharactersQueryResult)
-  {
+    @Inject(FIND_ALL_CHARACTERS_QUERY_RESULT) private readonly findAllCharactersQueryResult: FindAllCharactersQueryResult) {
   }
 
   @Get()
@@ -38,7 +37,7 @@ export class CharactersController {
     description: 'Filter characters by episode',
     example: '',
   })
-  findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto|CharacterDto|undefined> {
+  findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto | CharacterDto | undefined> {
     if (episode) {
       return this.findOneCharacterQueryResult.findOne(episode);
     }
@@ -62,7 +61,7 @@ export class CharactersController {
     description: 'Character not found',
   })
   findOne(@Param('name') name: string): Observable<CharacterDto> {
-    return this.findOneCharacterQueryResult.findOne(name).pipe(map((character)=>{
+    return this.findOneCharacterQueryResult.findOne(name).pipe(map((character) => {
       if (!character) {
         throw new Error('Character not found');
       }
@@ -72,10 +71,15 @@ export class CharactersController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new character' })
-  @ApiResponse({ status: 201, description: 'Character created successfully', type: CharacterDto })
+  @ApiResponse({ status: 201, description: 'Character created successfully', type: CharacterNewDto })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  createCharacter(@Body() characterDto: CharacterDto): Observable<void> {
-    return this.updateCharactersCommand.createCharacter({ ...characterDto, id: uuidv4() });
+  createCharacter(@Body() characterDto: CharacterNewDto): Observable<void> {
+    const characterIdentified: CharacterDto = {
+      ...characterDto,
+      id: uuidv4()
+    }
+
+    return this.updateCharactersCommand.createCharacter(characterIdentified);
   }
 
   @Put(':id')
@@ -92,6 +96,7 @@ export class CharactersController {
     @Param('id') id: string,
     @Body() characterDto: CharacterDto
   ): Observable<void> {
+
     const characterWithId = { ...characterDto, id };
 
     return this.updateCharactersCommand.updateCharacter(characterWithId);

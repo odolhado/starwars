@@ -1,14 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsArray, IsString, IsOptional, IsUUID } from 'class-validator';
 
-export class CharacterDto {
-  @ApiProperty({
-    description: 'Unique identifier for the character',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-  })
-  @IsUUID(4)
-  id?: string;
-
+export class CharacterNewDto {
   @ApiProperty({
     description: 'The name of the character',
     example: 'Luke Skywalker',
@@ -33,3 +26,14 @@ export class CharacterDto {
   @IsString()
   planet?: string;
 }
+
+
+export class CharacterDto extends CharacterNewDto {
+  @ApiProperty({
+    description: 'Unique identifier for the character',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @IsUUID(4)
+  id?: string;
+}
+

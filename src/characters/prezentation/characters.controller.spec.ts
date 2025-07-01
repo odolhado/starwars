@@ -3,7 +3,7 @@ import { CharactersController } from './characters.controller';
 import { FIND_ONE_CHARACTER_QUERY_RESULT } from '../application/query-result/find-one-by-episode-query.result';
 import { FIND_ALL_CHARACTERS_QUERY_RESULT } from '../application/query-result/find-all-characters-query.result';
 import { CharacterDto, CharacterNewDto } from '../application/domain/character.dto';
-import { lastValueFrom, of } from 'rxjs';
+import { lastValueFrom, of, take } from 'rxjs';
 import { UPDATE_CHARACTER_COMMAND } from '../application/commands/update-character.command';
 import { CharactersResponseDto } from '../application/domain/characters.response';
 

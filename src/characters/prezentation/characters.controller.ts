@@ -37,9 +37,15 @@ export class CharactersController {
     description: 'Filter characters by episode',
     example: '',
   })
-  findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto | CharacterDto | undefined> {
+  findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto> {
     if (episode) {
-      return this.findOneCharacterQueryResult.findOne(episode);
+      return this.findOneCharacterQueryResult.findOne(episode).pipe(
+        map((character: CharacterDto | undefined) => {
+            return {
+              characters: [character]
+            }
+        })
+      );
     }
     return this.findAllCharactersQueryResult.findAll();
   }

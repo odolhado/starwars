@@ -9,7 +9,8 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService,
+      providers: [
+        AppService,
         {
           provide: INITIALIZE_CHARACTERS_COMMAND,
           useValue: { execute: jest.fn() }

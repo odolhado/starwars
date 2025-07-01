@@ -50,15 +50,4 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
       ))
     );
   }
-
-  // findByEpisode(episode: string): Observable<CharactersResponseDto> {
-  //   return this.charactersStorage.selectAll().pipe(
-  //     map(characters => {
-  //       const filteredCharacters = characters.filter(character =>
-  //         character.episodes.includes(episode.toUpperCase())
-  //       );
-  //       return { characters: filteredCharacters };
-  //     })
-  //   );
-  // }
 }

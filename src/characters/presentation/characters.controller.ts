@@ -57,7 +57,7 @@ export class CharactersController {
     @Query('limit') limit: number = 10
   ): Observable<CharactersResponseDto> {
     if (episode) {
-      return this.findOneCharacterQueryResult.findOne(episode).pipe(
+      return this.findOneCharacterQueryResult.findOneByEpisode(episode).pipe(
         map((character: CharacterDto | undefined) => {
           return {
             characters: [character],

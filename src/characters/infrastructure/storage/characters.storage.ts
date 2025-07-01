@@ -51,8 +51,6 @@ export class CharactersStorage implements CharactersStorageInterface {
     changedCharacter: CharacterDto,
   ): Observable<void> {
     this.charactersInMemory.next([...this.charactersInMemory.getValue(), changedCharacter]);
-    console.log('> createOne', this.charactersInMemory.getValue());
-
     return of(void 0);
   }
 
@@ -72,7 +70,6 @@ export class CharactersStorage implements CharactersStorageInterface {
 
     if (found) {
       this.charactersInMemory.next(updatedCharacters);
-      console.log('> updatedCharacters', updatedCharacters);
     }
 
     return of(void 0);

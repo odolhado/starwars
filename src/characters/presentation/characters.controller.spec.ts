@@ -43,7 +43,8 @@ describe('CharactersController', () => {
         {
           provide: FIND_ONE_CHARACTER_QUERY_RESULT,
           useValue: {
-            findOne: jest.fn((name) => of(mockCharacter))
+            findOne: jest.fn((name) => of(mockCharacter)),
+            findOneByEpisode: jest.fn((name) => of(mockCharacter))
           }
         },
         {

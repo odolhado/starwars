@@ -4,7 +4,7 @@ import { CHARACTERS_REPOSITORY } from '../ports/characters.repository';
 import { CHARACTERS_STORAGE } from '../ports/characters.storage';
 import { CharacterDto } from '../domain/character.dto';
 import { lastValueFrom, of } from 'rxjs';
-import { CharactersResponseDto } from '../domain/characters.response';
+import { PaginationDto } from '../domain/pagination.dto';
 
 describe('CharactersState', () => {
   let state: CharactersState;
@@ -23,6 +23,12 @@ describe('CharactersState', () => {
       planet: 'Tatooine'
     }
   ];
+  const pagination: PaginationDto = {
+    page: 1,
+    pages: 1,
+    total: 1,
+    limit: 1
+  };
 
   const mockRepository = {
     getCharacters: jest.fn(() => of(mockCharacters))
@@ -107,14 +113,18 @@ describe('CharactersState', () => {
 
   describe('findAll', () => {
     it('should return all characters from storage', async () => {
-      const result = await lastValueFrom(state.findAll());
-
-      const expected: CharactersResponseDto = {
-        characters: mockCharacters
-      };
+      const result = await lastValueFrom(state.findAll(1, 2));
 
       expect(mockStorage.selectAll).toHaveBeenCalledTimes(1);
-      expect(result).toEqual(expected);
+      expect(result).toEqual({
+        characters: mockCharacters,
+        pagination: {
+          ...pagination,
+          limit: 2,
+          pages: 1,
+          total: 2,
+        }
+      });
     });
   });
 

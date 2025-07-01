@@ -34,7 +34,6 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
   initializeCharacters(): Observable<void> {
     return this.charactersRepository.getCharacters().pipe(
       switchMap(characters => {
-        console.log('> initializing characters', characters.length);
         return this.charactersStorage.initialize(characters);
       })
     );
@@ -60,10 +59,17 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
   }
 
   findOne(name: string): Observable<CharacterDto | undefined> {
-    console.log('> findByName:', name);
     return this.charactersStorage.selectAll().pipe(
       map(characters => characters.find(
         character => character.name.toLowerCase() === name.toLowerCase()
+      ))
+    );
+  }
+
+  findOneByEpisode(episode: string): Observable<CharacterDto | undefined> {
+    return this.charactersStorage.selectAll().pipe(
+      map(characters => characters.find(
+        character => character.episodes.includes(episode.toUpperCase())
       ))
     );
   }

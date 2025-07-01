@@ -12,12 +12,7 @@ export class AppService implements OnModuleInit {
     @Inject(INITIALIZE_CHARACTERS_COMMAND) private readonly initializeCharactersCommand: InitializeCharactersInterface,
   ) {}
 
-  getHello(): string {
-    return 'Hello World!';
-  }
-
   onModuleInit() {
     this.initializeCharactersCommand.initializeCharacters().pipe(take(1)).subscribe();
-    console.log('AppService: state initialized');
   }
 }

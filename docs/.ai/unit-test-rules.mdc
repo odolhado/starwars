@@ -4,23 +4,6 @@ globs: *.spec.ts
 alwaysApply: true
 ---
 
-## Component Configuration Rules
-
-### Standalone Components
-- Standalone components go in `imports` array, NOT `declarations`
-- Check component decorator for `standalone: true`
-- Example:
-  ```typescript
-  await TestBed.configureTestingModule({
-    imports: [
-      ComponentToTest,
-      TestPageComponent,  // if standalone
-      // ... other imports
-    ],
-    providers: [/* ... */]
-  });
-
-
 ### Observable Data Mocking
 inject query ports:
 ```typescript

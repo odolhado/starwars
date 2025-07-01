@@ -21,7 +21,7 @@ export class CharactersController {
     name: 'episode',
     required: false,
     description: 'Filter characters by episode',
-    example: 'NEWHOPE',
+    example: '',
   })
   findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto> {
     if (episode) {

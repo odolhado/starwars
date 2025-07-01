@@ -1,4 +1,4 @@
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, defer, map, Observable, of } from 'rxjs';
 import { Injectable } from '@nestjs/common';
 import { CharactersStorageInterface } from '../../application/ports/characters.storage';
 import { CharacterDto } from '../../application/domain/character.dto';
@@ -7,19 +7,28 @@ import { CharacterDto } from '../../application/domain/character.dto';
 export class CharactersStorage implements CharactersStorageInterface {
 
   private charactersInMemory: BehaviorSubject<any> =
-    new BehaviorSubject<any>({
-      all: new Map<number, CharacterDto>([]),
-    });
+    new BehaviorSubject<CharacterDto[]>([]);
 
   initialize(
     characters: CharacterDto[]
   ): Observable<void> {
-    console.log('> initialize', characters);
-    return of(this.charactersInMemory.next(characters));
+
+    return defer(() => {
+      this.charactersInMemory.next(characters);
+
+      console.log('> characters initialized', this.charactersInMemory.getValue());
+
+      return of(void 0);
+    });
   }
 
   selectAll(): Observable<CharacterDto[]>{
-    return this.charactersInMemory.asObservable().pipe(map((data)=>data.all));
+
+    const allCharacters = this.charactersInMemory.getValue();
+    console.log('> selectAll?', this.charactersInMemory);
+
+
+    return of(allCharacters);
   }
 
   updateOne(

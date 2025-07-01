@@ -13,6 +13,6 @@ export class AppService implements OnModuleInit {
 
   onModuleInit() {
     this.charactersState.initialize().pipe(take(1)).subscribe();
-    console.log('Character state initialized');
+    console.log('AppService: state initialized');
   }
 }

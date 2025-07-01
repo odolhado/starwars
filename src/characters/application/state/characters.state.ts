@@ -1,22 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CharacterDto } from '../../application/domain/character.dto';
 import { CharactersResponseDto } from '../../application/domain/characters.response';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { CHARACTERS_REPOSITORY, CharactersRepositoryInterface } from '../ports/characters.repository';
 import { CHARACTERS_STORAGE, CharactersStorageInterface } from '../ports/characters.storage';
 
 @Injectable()
 export class CharactersState {
-  private readonly characters$: Observable<CharacterDto[]> = this.charactersStorage.selectAll();
 
+  private readonly characters$: Observable<CharacterDto[]> = this.charactersStorage.selectAll();
   constructor(
     @Inject(CHARACTERS_REPOSITORY) private readonly charactersRepository: CharactersRepositoryInterface,
     @Inject(CHARACTERS_STORAGE) private readonly charactersStorage: CharactersStorageInterface,
-  ) {}
+  ) {
+  }
 
   initialize(): Observable<void> {
     return this.charactersRepository.getCharacters().pipe(
       switchMap(characters => {
+
+        console.log('> initializing characters', characters.length);
         return this.charactersStorage.initialize(characters);
       })
     );
@@ -24,13 +27,10 @@ export class CharactersState {
 
   findAll(): Observable<CharactersResponseDto> {
     console.log('> findAll');
-    return this.characters$.pipe(
-      map(characters => (
-        {
-          characters: characters
-        }
-      ))
-    );
+
+    return this.charactersStorage.selectAll().pipe(map((characters)=>{
+      return { characters }
+    }));
   }
 
   findByName(name: string): Observable<CharacterDto | undefined> {

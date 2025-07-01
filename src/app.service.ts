@@ -1,5 +1,4 @@
 import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { CharactersState } from './characters/application/state/characters.state';
 import { take } from 'rxjs';
 import {
   INITIALIZE_CHARACTERS_COMMAND,

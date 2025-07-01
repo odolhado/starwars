@@ -15,7 +15,6 @@ export class CharactersStorage implements CharactersStorageInterface {
 
     return defer(() => {
       this.charactersInMemory.next(characters);
-
       console.log('> characters initialized', this.charactersInMemory.getValue());
 
       return of(void 0);
@@ -23,25 +22,27 @@ export class CharactersStorage implements CharactersStorageInterface {
   }
 
   selectAll(): Observable<CharacterDto[]>{
-
-    const allCharacters = this.charactersInMemory.getValue();
-    console.log('> selectAll?', this.charactersInMemory);
-
-
-    return of(allCharacters);
+    return of(this.charactersInMemory.getValue());
   }
 
   updateOne(
-    character: CharacterDto,
+    changedCharacter: CharacterDto,
   ): Observable<void> {
-    console.log('> updateOne::', JSON.stringify(character));
     const characters = this.charactersInMemory.getValue()
+    let found = false;
 
-    characters.all.find((user)=> {
-
+    const updatedCharacters = characters?.map((character: CharacterDto)=> {
+      if (character.id === changedCharacter.id) {
+        found = true;
+        return changedCharacter;
+      }
+      return character;
     })
 
-    this.charactersInMemory.next(characters);
+    if (found) {
+      this.charactersInMemory.next(updatedCharacters);
+      console.log('> updatedCharacters', updatedCharacters);
+    }
 
     return of(void 0);
   }

@@ -92,7 +92,6 @@ export class CharactersController {
     @Param('id') id: string,
     @Body() characterDto: CharacterDto
   ): Observable<void> {
-    // Ensure the ID in the path matches the one in the DTO
     const characterWithId = { ...characterDto, id };
 
     return this.updateCharactersCommand.updateCharacter(characterWithId);

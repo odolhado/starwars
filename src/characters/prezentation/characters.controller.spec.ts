@@ -6,6 +6,7 @@ import { CharacterDto, CharacterNewDto } from '../application/domain/character.d
 import { lastValueFrom, of, take } from 'rxjs';
 import { UPDATE_CHARACTER_COMMAND } from '../application/commands/update-character.command';
 import { CharactersResponseDto } from '../application/domain/characters.response';
+import { PaginationDto } from '../application/domain/pagination.dto';
 
 describe('CharactersController', () => {
   let controller: CharactersController;
@@ -15,8 +16,15 @@ describe('CharactersController', () => {
     name: 'Luke Skywalker',
     episodes: ['NEWHOPE', 'EMPIRE']
   };
+  const pagination: PaginationDto = {
+    page: 1,
+    pages: 1,
+    total: 1,
+    limit: 1
+  };
   const mockCharacters: CharactersResponseDto = {
-    characters: [mockCharacter]
+    characters: [mockCharacter],
+    pagination: pagination
   };
   const mockUpdateCommand = {
     updateCharacter: jest.fn(() => of(undefined)),
@@ -58,7 +66,7 @@ describe('CharactersController', () => {
 
     it('should filter characters by episode', async () => {
       const result = await lastValueFrom(controller.findAll('NEWHOPE'));
-      expect(result).toEqual({ characters: [mockCharacter] });
+      expect(result).toEqual({ characters: [mockCharacter], pagination });
     });
 
     it('should update the character', async () => {

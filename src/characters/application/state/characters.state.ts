@@ -40,9 +40,22 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
     );
   }
 
-  findAll(): Observable<CharactersResponseDto> {
-    return this.charactersStorage.selectAll().pipe(map((characters)=>{
-      return { characters }
+  findAll(page: number = 1, limit: number = 1): Observable<CharactersResponseDto> {
+    return this.charactersStorage.selectAll().pipe(map((characters: CharacterDto[])=>{
+      const total = characters.length;
+      const pages = Math.ceil(total / limit);
+      const startIndex = (page - 1) * limit;
+      const endIndex = startIndex + limit;
+
+      return {
+        characters: characters.slice(startIndex, endIndex),
+        pagination: {
+          page,
+          limit,
+          total,
+          pages
+        }
+      };
     }));
   }
 

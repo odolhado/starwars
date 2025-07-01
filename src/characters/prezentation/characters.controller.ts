@@ -37,17 +37,42 @@ export class CharactersController {
     description: 'Filter characters by episode',
     example: '',
   })
-  findAll(@Query('episode') episode?: string): Observable<CharactersResponseDto> {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Page number (starts from 1)',
+    example: 1,
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Number of items per page',
+    example: 10,
+    type: Number,
+  })
+  findAll(
+    @Query('episode') episode?: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10
+  ): Observable<CharactersResponseDto> {
     if (episode) {
       return this.findOneCharacterQueryResult.findOne(episode).pipe(
         map((character: CharacterDto | undefined) => {
-            return {
-              characters: [character]
+          return {
+            characters: [character],
+            pagination: {
+              page: 1,
+              pages: 1,
+              total: 1,
+              limit: 1
             }
+          }
         })
       );
     }
-    return this.findAllCharactersQueryResult.findAll();
+
+    return this.findAllCharactersQueryResult.findAll(page, limit);
   }
 
   @Get(':name')

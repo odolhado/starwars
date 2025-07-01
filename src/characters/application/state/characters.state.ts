@@ -8,7 +8,6 @@ import { CHARACTERS_STORAGE, CharactersStorageInterface } from '../ports/charact
 @Injectable()
 export class CharactersState {
 
-  private readonly characters$: Observable<CharacterDto[]> = this.charactersStorage.selectAll();
   constructor(
     @Inject(CHARACTERS_REPOSITORY) private readonly charactersRepository: CharactersRepositoryInterface,
     @Inject(CHARACTERS_STORAGE) private readonly charactersStorage: CharactersStorageInterface,
@@ -18,7 +17,6 @@ export class CharactersState {
   initialize(): Observable<void> {
     return this.charactersRepository.getCharacters().pipe(
       switchMap(characters => {
-
         console.log('> initializing characters', characters.length);
         return this.charactersStorage.initialize(characters);
       })
@@ -26,15 +24,14 @@ export class CharactersState {
   }
 
   findAll(): Observable<CharactersResponseDto> {
-    console.log('> findAll');
-
     return this.charactersStorage.selectAll().pipe(map((characters)=>{
       return { characters }
     }));
   }
 
   findByName(name: string): Observable<CharacterDto | undefined> {
-    return this.characters$.pipe(
+    console.log('> findByName:', name);
+    return this.charactersStorage.selectAll().pipe(
       map(characters => characters.find(
         character => character.name.toLowerCase() === name.toLowerCase()
       ))
@@ -42,7 +39,7 @@ export class CharactersState {
   }
 
   findByEpisode(episode: string): Observable<CharactersResponseDto> {
-    return this.characters$.pipe(
+    return this.charactersStorage.selectAll().pipe(
       map(characters => {
         const filteredCharacters = characters.filter(character =>
           character.episodes.includes(episode.toUpperCase())

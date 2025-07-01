@@ -1,8 +1,9 @@
 {
-  "characters": [{
-    "name": "Luke Skywalker",
-    "episodes": ["NEWHOPE", "EMPIRE", "JEDI"]
-  },
+  "characters": [
+    {
+      "name": "Luke Skywalker",
+      "episodes": ["NEWHOPE", "EMPIRE", "JEDI"]
+    },
     {
       "name": "Darth Vader",
       "episodes": ["NEWHOPE", "EMPIRE", "JEDI"]

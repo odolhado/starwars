@@ -27,13 +27,17 @@ export class CharacterNewDto {
   planet?: string;
 }
 
-
 export class CharacterDto extends CharacterNewDto {
   @ApiProperty({
     description: 'Unique identifier for the character',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   @IsUUID(4)
-  id?: string;
+  id: string;
 }
 
+enum Episode {
+  NEWHOPE = "NEWHOPE",
+  EMPIRE = "EMPIRE",
+  JEDI = "JEDI"
+}

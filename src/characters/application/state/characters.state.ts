@@ -1,12 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CharacterDto } from '../../application/domain/character.dto';
 import { CharactersResponseDto } from '../../application/domain/characters.response';
-import { map, Observable, switchMap } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { CHARACTERS_REPOSITORY, CharactersRepositoryInterface } from '../ports/characters.repository';
 import { CHARACTERS_STORAGE, CharactersStorageInterface } from '../ports/characters.storage';
+import { UpdateCharactersInterface } from '../commands/update-character.command';
+import { InitializeCharactersInterface } from '../commands/initialize-character.command';
+import { FindAllCharactersQueryResult } from '../query-result/find-all-characters-query.result';
+import { FindOneCharacterQueryResult } from '../query-result/find-one-by-episode-query.result';
 
 @Injectable()
-export class CharactersState {
+export class CharactersState implements InitializeCharactersInterface, UpdateCharactersInterface,
+  FindAllCharactersQueryResult, FindOneCharacterQueryResult {
 
   constructor(
     @Inject(CHARACTERS_REPOSITORY) private readonly charactersRepository: CharactersRepositoryInterface,
@@ -14,7 +19,11 @@ export class CharactersState {
   ) {
   }
 
-  initialize(): Observable<void> {
+  updateCharacter(character: CharacterDto): Observable<void> {
+    return this.charactersStorage.updateOne(character);
+  }
+
+  initializeCharacters(): Observable<void> {
     return this.charactersRepository.getCharacters().pipe(
       switchMap(characters => {
         console.log('> initializing characters', characters.length);
@@ -29,7 +38,7 @@ export class CharactersState {
     }));
   }
 
-  findByName(name: string): Observable<CharacterDto | undefined> {
+  findOne(name: string): Observable<CharacterDto | undefined> {
     console.log('> findByName:', name);
     return this.charactersStorage.selectAll().pipe(
       map(characters => characters.find(
@@ -38,14 +47,14 @@ export class CharactersState {
     );
   }
 
-  findByEpisode(episode: string): Observable<CharactersResponseDto> {
-    return this.charactersStorage.selectAll().pipe(
-      map(characters => {
-        const filteredCharacters = characters.filter(character =>
-          character.episodes.includes(episode.toUpperCase())
-        );
-        return { characters: filteredCharacters };
-      })
-    );
-  }
+  // findByEpisode(episode: string): Observable<CharactersResponseDto> {
+  //   return this.charactersStorage.selectAll().pipe(
+  //     map(characters => {
+  //       const filteredCharacters = characters.filter(character =>
+  //         character.episodes.includes(episode.toUpperCase())
+  //       );
+  //       return { characters: filteredCharacters };
+  //     })
+  //   );
+  // }
 }

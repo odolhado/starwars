@@ -2,10 +2,26 @@ import { Module } from '@nestjs/common';
 import { CharactersState } from './characters.state';
 import { CharactersRepositoryModule } from '../../infrastructure/characters.repository.module';
 import { CharactersStorageModule } from '../../infrastructure/storage/characters.storage.module';
+import { INITIALIZE_CHARACTERS_COMMAND } from '../commands/initialize-character.command';
+import { UPDATE_CHARACTER_COMMAND } from '../commands/update-character.command';
+import { FIND_ALL_CHARACTERS_QUERY_RESULT } from '../query-result/find-all-characters-query.result';
+import { FIND_ONE_CHARACTER_QUERY_RESULT } from '../query-result/find-one-by-episode-query.result';
 
 @Module({
   imports: [CharactersRepositoryModule, CharactersStorageModule],
-  providers: [CharactersState],
-  exports: [CharactersState],
+  providers: [
+    CharactersState,
+    { provide: INITIALIZE_CHARACTERS_COMMAND, useClass: CharactersState},
+    { provide: UPDATE_CHARACTER_COMMAND, useClass: CharactersState},
+    { provide: FIND_ALL_CHARACTERS_QUERY_RESULT, useClass: CharactersState},
+    { provide: FIND_ONE_CHARACTER_QUERY_RESULT, useClass: CharactersState}
+  ],
+  exports: [
+    CharactersState,
+    { provide: INITIALIZE_CHARACTERS_COMMAND, useClass: CharactersState},
+    { provide: UPDATE_CHARACTER_COMMAND, useClass: CharactersState},
+    { provide: FIND_ALL_CHARACTERS_QUERY_RESULT, useClass: CharactersState},
+    { provide: FIND_ONE_CHARACTER_QUERY_RESULT, useClass: CharactersState}
+  ],
 })
 export class CharactersStateModule {}

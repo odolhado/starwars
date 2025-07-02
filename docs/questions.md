@@ -16,7 +16,7 @@
 
 ## answers:
 
- * episodes could be separate table in relation to characters, that would reduce data redundancy
- * alternative approach would be document based database(MongoDB), due potential dynamic structure of the documents, that would provide faster responses  
- * characters should have IDs for easy access in the API 
+* episodes could be separate table in relation to characters, that would reduce data redundancy
+* alternative approach would be document based database(MongoDB), due potential dynamic structure of the documents, that would provide faster responses  
+* characters should have IDs for easy access in the API 
 

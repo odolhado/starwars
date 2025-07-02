@@ -58,6 +58,7 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
     }));
   }
 
+  // todo: it should really return only one record. but now, there is no limit applied
   findOne(name: string): Observable<CharacterDto | undefined> {
     return this.charactersStorage.selectAll().pipe(
       map(characters => characters.find(

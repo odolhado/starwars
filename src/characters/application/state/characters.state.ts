@@ -41,6 +41,8 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
 
   findAll(page: number = 1, limit: number = 1): Observable<CharactersResponseDto> {
     return this.charactersStorage.selectAll().pipe(map((characters: CharacterDto[])=>{
+
+      // todo:: move pagination to the Storage, as pagination is specific to the database, and could be done differently
       const total = characters.length;
       const pages = Math.ceil(total / limit);
       const startIndex = (page - 1) * limit;
@@ -60,6 +62,7 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
 
   // todo: it should really return only one record. but now, there is no limit applied
   findOne(name: string): Observable<CharacterDto | undefined> {
+    // todo: move filtering to the Storage, as we cant always return all the records (1M) to the State. storage is database specific
     return this.charactersStorage.selectAll().pipe(
       map(characters => characters.find(
         character => character.name.toLowerCase() === name.toLowerCase()
@@ -68,6 +71,7 @@ export class CharactersState implements InitializeCharactersInterface, UpdateCha
   }
 
   findOneByEpisode(episode: string): Observable<CharacterDto | undefined> {
+    // todo: move filtering to the Storage, as we cant always return all the records (1M) to the State. storage is database specific
     return this.charactersStorage.selectAll().pipe(
       map(characters => characters.find(
         character => character.episodes.includes(episode.toUpperCase())

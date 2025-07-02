@@ -17,11 +17,10 @@ import { FIND_ONE_CHARACTER_QUERY_RESULT } from '../query-result/find-one-by-epi
     { provide: FIND_ONE_CHARACTER_QUERY_RESULT, useClass: CharactersState}
   ],
   exports: [
-    CharactersState,
-    { provide: INITIALIZE_CHARACTERS_COMMAND, useClass: CharactersState},
-    { provide: UPDATE_CHARACTER_COMMAND, useClass: CharactersState},
-    { provide: FIND_ALL_CHARACTERS_QUERY_RESULT, useClass: CharactersState},
-    { provide: FIND_ONE_CHARACTER_QUERY_RESULT, useClass: CharactersState}
+    INITIALIZE_CHARACTERS_COMMAND,
+    UPDATE_CHARACTER_COMMAND,
+    FIND_ALL_CHARACTERS_QUERY_RESULT,
+    FIND_ONE_CHARACTER_QUERY_RESULT,
   ],
 })
 export class CharactersStateModule {}

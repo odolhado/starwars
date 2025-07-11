@@ -10,7 +10,6 @@ import { FIND_ONE_CHARACTER_QUERY_RESULT } from '../query-result/find-one-by-epi
 @Module({
   imports: [CharactersRepositoryModule, CharactersStorageModule],
   providers: [
-    CharactersState,
     { provide: INITIALIZE_CHARACTERS_COMMAND, useClass: CharactersState},
     { provide: UPDATE_CHARACTER_COMMAND, useClass: CharactersState},
     { provide: FIND_ALL_CHARACTERS_QUERY_RESULT, useClass: CharactersState},

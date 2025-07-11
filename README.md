@@ -4,6 +4,7 @@
 
  * NodeJS
  * NestJS
+ * Swagger
  * rest API
  * hexagonal architecture
 
@@ -26,6 +27,10 @@ $ pnpm run start:dev
 # production mode
 $ pnpm run start:prod
 ```
+
+## Open Swagger
+
+http://local:3000/api/#/characters
 
 ## Run tests
 

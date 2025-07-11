@@ -10,7 +10,7 @@ import { FindAllCharactersQueryResult } from './query-result/find-all-characters
 import { FindOneCharacterQueryResult } from './query-result/find-one-by-episode-query.result';
 
 @Injectable()
-export class CharactersState implements InitializeCharactersInterface, UpdateCharactersInterface,
+export class CharactersApp implements InitializeCharactersInterface, UpdateCharactersInterface,
   FindAllCharactersQueryResult, FindOneCharacterQueryResult {
 
   constructor(

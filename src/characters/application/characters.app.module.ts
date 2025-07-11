@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CharactersState } from './characters.state';
+import { CharactersApp } from './characters.app';
 import { CharactersRepositoryModule } from './../infrastructure/characters.repository.module';
 import { CharactersStorageModule } from './../infrastructure/storage/characters.storage.module';
 import { INITIALIZE_CHARACTERS_COMMAND } from './commands/initialize-character.command';
@@ -10,10 +10,10 @@ import { FIND_ONE_CHARACTER_QUERY_RESULT } from './query-result/find-one-by-epis
 @Module({
   imports: [CharactersRepositoryModule, CharactersStorageModule],
   providers: [
-    { provide: INITIALIZE_CHARACTERS_COMMAND, useClass: CharactersState},
-    { provide: UPDATE_CHARACTER_COMMAND, useClass: CharactersState},
-    { provide: FIND_ALL_CHARACTERS_QUERY_RESULT, useClass: CharactersState},
-    { provide: FIND_ONE_CHARACTER_QUERY_RESULT, useClass: CharactersState}
+    { provide: INITIALIZE_CHARACTERS_COMMAND, useClass: CharactersApp},
+    { provide: UPDATE_CHARACTER_COMMAND, useClass: CharactersApp},
+    { provide: FIND_ALL_CHARACTERS_QUERY_RESULT, useClass: CharactersApp},
+    { provide: FIND_ONE_CHARACTER_QUERY_RESULT, useClass: CharactersApp}
   ],
   exports: [
     INITIALIZE_CHARACTERS_COMMAND,
@@ -22,4 +22,4 @@ import { FIND_ONE_CHARACTER_QUERY_RESULT } from './query-result/find-one-by-epis
     FIND_ONE_CHARACTER_QUERY_RESULT,
   ],
 })
-export class CharactersStateModule {}
+export class CharactersAppModule {}

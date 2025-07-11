@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CharactersState } from './characters.state';
-import { CHARACTERS_REPOSITORY } from '../ports/characters.repository';
-import { CHARACTERS_STORAGE } from '../ports/characters.storage';
-import { CharacterDto } from '../domain/character.dto';
+import { CharactersApp } from './characters.app';
+import { CHARACTERS_REPOSITORY } from './ports/characters.repository';
+import { CHARACTERS_STORAGE } from './ports/characters.storage';
+import { CharacterDto } from './domain/character.dto';
 import { lastValueFrom, of } from 'rxjs';
-import { PaginationDto } from '../domain/pagination.dto';
+import { PaginationDto } from './domain/pagination.dto';
 
-describe('CharactersState', () => {
-  let state: CharactersState;
+describe('CharactersApp', () => {
+  let state: CharactersApp;
 
   const mockCharacters: CharacterDto[] = [
     {
@@ -45,7 +45,7 @@ describe('CharactersState', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        CharactersState,
+        CharactersApp,
         {
           provide: CHARACTERS_REPOSITORY,
           useValue: mockRepository
@@ -57,7 +57,7 @@ describe('CharactersState', () => {
       ],
     }).compile();
 
-    state = module.get<CharactersState>(CharactersState);
+    state = module.get<CharactersApp>(CharactersApp);
 
     // Reset mocks before each test
     jest.clearAllMocks();

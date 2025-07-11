@@ -1,13 +1,13 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CharacterDto } from '../../application/domain/character.dto';
-import { CharactersResponseDto } from '../../application/domain/characters.response';
+import { CharacterDto } from './../application/domain/character.dto';
+import { CharactersResponseDto } from './../application/domain/characters.response';
 import { map, Observable, of, switchMap } from 'rxjs';
-import { CHARACTERS_REPOSITORY, CharactersRepositoryInterface } from '../ports/characters.repository';
-import { CHARACTERS_STORAGE, CharactersStorageInterface } from '../ports/characters.storage';
-import { UpdateCharactersInterface } from '../commands/update-character.command';
-import { InitializeCharactersInterface } from '../commands/initialize-character.command';
-import { FindAllCharactersQueryResult } from '../query-result/find-all-characters-query.result';
-import { FindOneCharacterQueryResult } from '../query-result/find-one-by-episode-query.result';
+import { CHARACTERS_REPOSITORY, CharactersRepositoryInterface } from './ports/characters.repository';
+import { CHARACTERS_STORAGE, CharactersStorageInterface } from './ports/characters.storage';
+import { UpdateCharactersInterface } from './commands/update-character.command';
+import { InitializeCharactersInterface } from './commands/initialize-character.command';
+import { FindAllCharactersQueryResult } from './query-result/find-all-characters-query.result';
+import { FindOneCharacterQueryResult } from './query-result/find-one-by-episode-query.result';
 
 @Injectable()
 export class CharactersState implements InitializeCharactersInterface, UpdateCharactersInterface,
